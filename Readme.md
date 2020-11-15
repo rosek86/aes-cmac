@@ -10,12 +10,26 @@ npm i aes-cmac
 
 ## Examples
 
-### NodeJS (Javascript)
+### NodeJS (CommonJS)
 
 ```
 const AesCmac = require('aes-cmac').AesCmac;
+
 const key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
 const msg = Buffer.from('6bc1bee22e409f96e93d7e117393172a', 'hex');
+
+const aesCmac = new AesCmac(key);
+console.log(aesCmac.calculate(msg).toString('hex'));
+```
+
+### NodeJS (ECMAScript modules)
+
+```
+import { AesCmac } from 'aes-cmac';
+
+const key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
+const msg = Buffer.from('6bc1bee22e409f96e93d7e117393172a', 'hex');
+
 const aesCmac = new AesCmac(key);
 console.log(aesCmac.calculate(msg).toString('hex'));
 ```
