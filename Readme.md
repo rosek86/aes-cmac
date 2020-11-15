@@ -12,7 +12,7 @@ npm i aes-cmac
 
 ### NodeJS (CommonJS)
 
-```
+```js
 const AesCmac = require('aes-cmac').AesCmac;
 
 const key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
@@ -24,7 +24,7 @@ console.log(aesCmac.calculate(msg).toString('hex'));
 
 ### NodeJS (ECMAScript modules)
 
-```
+```js
 import { AesCmac } from 'aes-cmac';
 
 const key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
