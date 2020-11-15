@@ -1,16 +1,29 @@
 {
   "name": "aes-cmac",
   "version": "1.0.0",
-  "description": "",
-  "main": "AesCmac.js",
+  "description": "AES-CMAC implementation in typescript",
+  "main": "lib/AesCmac.js",
+  "types": "lib/AesCmac.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "mocha test/main.js"
+    "test": "mocha test/main.js",
+    "prepare": "npm run build"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosek86/aes-cmac.git"
+  },
+  "keywords": [
+    "aes-cmac"
+  ],
   "author": "Krzysztof Rosinski",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rosek86/aes-cmac/issues"
+  },
+  "homepage": "https://github.com/rosek86/aes-cmac/#readme",
+  "files": [ "lib/**/*" ],
   "devDependencies": {
     "@types/node": "^14.14.7",
     "mocha": "^8.2.1",

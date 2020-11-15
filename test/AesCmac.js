@@ -1,4 +1,4 @@
-const AesCmac = require('../build/AesCmac.js').AesCmac;
+const AesCmac = require('../lib/AesCmac.js').AesCmac;
 const assert = require('assert');
 
 describe('aes-cmac', () => {

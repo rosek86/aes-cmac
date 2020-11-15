@@ -1,7 +1,7 @@
 require('./BufferTools');
 require('./AesCmac');
 
-const AesCmac = require('../build/AesCmac.js').AesCmac;
+const AesCmac = require('../lib/AesCmac.js').AesCmac;
 const assert = require('assert');
 
 describe('index (module entry point)', () => {

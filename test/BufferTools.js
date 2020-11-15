@@ -1,4 +1,4 @@
-const bufferTools = require('../build/BufferTools.js').BufferTools;
+const bufferTools = require('../lib/BufferTools.js').BufferTools;
 const assert = require('assert');
 
 describe('buffer-tools', () => {

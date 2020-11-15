@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "target": "ES2020",
+    "target": "es5",
     "strict": true,
+    "declaration": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "build"
+    "outDir": "lib"
   },
   "files": [
     "./src/AesCmac.ts"
