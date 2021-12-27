@@ -2,7 +2,11 @@ import { createCipheriv } from 'crypto';
 import { BufferTools } from './BufferTools';
 
 export class AesCmac {
-  private readonly algos: { [id:number]: string } = { 16: `aes128`, 24: `aes192`, 32: `aes256` };
+  private readonly algos: { [id:number]: string } = {
+    16: `aes-128-cbc`,
+    24: `aes-192-cbc`,
+    32: `aes-256-cbc`,
+  };
   private readonly blockSize = 16;
 
   private algo: string;
