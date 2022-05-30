@@ -1,34 +1,35 @@
-import { createCipheriv } from 'crypto';
-import { BufferTools } from './BufferTools';
+import { webcrypto } from "one-webcrypto";
+import { Buffer } from "buffer";
+import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
-  private readonly algos: { [id:number]: string } = {
+  private readonly algos: { [id: number]: string } = {
     16: `aes-128-cbc`,
     24: `aes-192-cbc`,
     32: `aes-256-cbc`,
   };
   private readonly blockSize = 16;
-
-  private algo: string;
-  private subkeys: { key1: Buffer; key2: Buffer; };
-
-  public constructor(private key: Buffer) {
-    if ((key instanceof Buffer) === false) {
+  private subkeys?: { key1: Buffer; key2: Buffer };
+  private key: CryptoKey | PromiseLike<CryptoKey>;
+  public constructor(key: Buffer) {
+    if (key instanceof Buffer === false) {
       throw new Error(`The key must be provided as a Buffer.`);
     }
-    if ((key.length in this.algos) === false) {
+
+    if (key.length in this.algos === false) {
       throw new Error(`Key size must be 128, 192, or 256 bits.`);
     }
 
-    this.algo = this.algos[key.length];
-    this.subkeys = this.generateSubkeys();
+    this.key = webcrypto.subtle.importKey("raw", key, "AES-CBC", false, [
+      "encrypt",
+    ]); // note that this is a Promise<CryptoKey> at this point, which we await in aes()
   }
 
-  private generateSubkeys(): { key1: Buffer; key2: Buffer; } {
+  private async generateSubkeys(): Promise<{ key1: Buffer; key2: Buffer }> {
     const rb = Buffer.from(`00000000000000000000000000000087`, `hex`);
 
     const z = Buffer.alloc(this.blockSize, 0);
-    const l = this.aes(z);
+    const l = await this.aes(z);
 
     let key1 = BufferTools.bitShiftLeft(l);
     if (l[0] & 0x80) {
@@ -43,7 +44,12 @@ export class AesCmac {
     return { key1, key2 };
   }
 
-  public getSubKeys(): { key1: Buffer; key2: Buffer } {
+  public async getSubKeys(): Promise<{ key1: Buffer; key2: Buffer }> {
+    // subkeys are generated lazily because we cannot await in a constructor
+    if (!this.subkeys) {
+      this.subkeys = await this.generateSubkeys();
+    }
+
     const key1 = Buffer.alloc(this.blockSize);
     const key2 = Buffer.alloc(this.blockSize);
 
@@ -53,8 +59,8 @@ export class AesCmac {
     return { key1, key2 };
   }
 
-  public calculate(message: Buffer): Buffer {
-    if ((message instanceof Buffer) === false) {
+  public async calculate(message: Buffer): Promise<Buffer> {
+    if (message instanceof Buffer === false) {
       throw new Error(`The message must be provided as a Buffer.`);
     }
 
@@ -67,11 +73,11 @@ export class AesCmac {
       const from = i * this.blockSize;
       const block = message.slice(from, from + this.blockSize);
       y = BufferTools.xor(x, block);
-      x = this.aes(y);
+      x = await this.aes(y);
     }
 
-    y = BufferTools.xor(x, this.getLastBlock(message));
-    x = this.aes(y);
+    y = BufferTools.xor(x, await this.getLastBlock(message));
+    x = await this.aes(y);
 
     return x;
   }
@@ -81,21 +87,34 @@ export class AesCmac {
     return blockCount === 0 ? 1 : blockCount;
   }
 
-  private aes(message: Buffer): Buffer {
-    const z = Buffer.alloc(this.blockSize, 0);
-    const cipher = createCipheriv(this.algo, this.key, z);
-    const result = cipher.update(message);
-    cipher.final();
-    return result;
+  private async aes(message: Buffer): Promise<Buffer> {
+    const iv = Buffer.alloc(this.blockSize, 0);
+
+    /// because constructors cannot be async, we await the key import here
+    if ("then" in this.key) {
+      this.key = await this.key;
+    }
+
+    const aesCiphertext = (await webcrypto.subtle.encrypt(
+      { name: "AES-CBC", iv },
+      this.key,
+      message
+    )) as ArrayBuffer;
+
+    return Buffer.from(aesCiphertext).slice(0, 16);
   }
 
-  private getLastBlock(message: Buffer): Buffer {
+  private async getLastBlock(message: Buffer): Promise<Buffer> {
+    if (!this.subkeys) {
+      this.subkeys = await this.generateSubkeys();
+    }
+
     const blockCount = this.getBlockCount(message);
     const paddedBlock = this.padding(message, blockCount - 1);
 
     let complete = false;
     if (message.length > 0) {
-      complete = (message.length % this.blockSize) === 0;
+      complete = message.length % this.blockSize === 0;
     }
 
     const key = complete ? this.subkeys.key1 : this.subkeys.key2;
