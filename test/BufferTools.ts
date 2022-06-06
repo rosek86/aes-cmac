@@ -1,10 +1,12 @@
-const bufferTools = require('../lib/BufferTools.js').BufferTools;
-const assert = require('assert');
+import assert from 'assert';
+import { BufferTools } from '../lib/BufferTools';
 
 describe('buffer-tools', () => {
   describe('bitShiftLeft', () => {
-    function testBitShiftLeft(input) {
-      return bufferTools.bitShiftLeft(Buffer.from(input, 'hex')).toString('hex');
+    function testBitShiftLeft(input: string): string {
+      return Buffer.from(
+        BufferTools.bitShiftLeft(Buffer.from(input, 'hex'))
+      ).toString('hex');
     }
 
     it('returns a buffer bitshifted left 1 bit (buffer_value << 1)', () => {
@@ -21,8 +23,12 @@ describe('buffer-tools', () => {
   });
 
   describe('xor', () => {
-    function testXor(a, b) {
-      return bufferTools.xor(Buffer.from(a, 'hex'), Buffer.from(b, 'hex')).toString('hex');
+    function testXor(a: string, b: string): string {
+      return Buffer.from(
+        BufferTools.xor(
+          Buffer.from(a, 'hex'), Buffer.from(b, 'hex')
+        )
+      ).toString('hex');
     };
 
     it('returns the logical XOR of two buffers', () => {
@@ -38,8 +44,8 @@ describe('buffer-tools', () => {
   });
 
   describe('toBinaryString', () => {
-    function testToBinaryString(input) {
-      return bufferTools.toBinaryString(Buffer.from(input, 'hex'));
+    function testToBinaryString(input: string): string {
+      return BufferTools.toBinaryString(Buffer.from(input, 'hex'));
     }
 
     it('returns the binary string representation of a buffer', () => {

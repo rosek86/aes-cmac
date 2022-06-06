@@ -1,5 +1,5 @@
-const AesCmac = require("../lib/AesCmac.js").AesCmac;
-const assert = require("assert");
+import assert from 'assert';
+import { AesCmac } from "../lib/AesCmac";
 
 describe("aes-cmac", () => {
   describe("NIST 800-38B test vectors", () => {
@@ -18,8 +18,8 @@ describe("aes-cmac", () => {
     describe("generateSubkeys(key)", () => {
       it("creates the correct subkeys for a 128 bit key", async () => {
         const expected = {
-          key1: Buffer.from("fbeed618357133667c85e08f7236a8de", "hex"),
-          key2: Buffer.from("f7ddac306ae266ccf90bc11ee46d513b", "hex"),
+          key1: Uint8Array.from(Buffer.from("fbeed618357133667c85e08f7236a8de", "hex")),
+          key2: Uint8Array.from(Buffer.from("f7ddac306ae266ccf90bc11ee46d513b", "hex")),
         };
         const aesCmac = new AesCmac(keys["128"]);
         const result = await aesCmac.getSubKeys();
@@ -28,8 +28,8 @@ describe("aes-cmac", () => {
 
       it("creates the correct subkeys for a 192 bit key", async () => {
         const expected = {
-          key1: Buffer.from("448a5b1c93514b273ee6439dd4daa296", "hex"),
-          key2: Buffer.from("8914b63926a2964e7dcc873ba9b5452c", "hex"),
+          key1: Uint8Array.from(Buffer.from("448a5b1c93514b273ee6439dd4daa296", "hex")),
+          key2: Uint8Array.from(Buffer.from("8914b63926a2964e7dcc873ba9b5452c", "hex")),
         };
         const aesCmac = new AesCmac(keys["192"]);
         const result = await aesCmac.getSubKeys();
@@ -38,8 +38,8 @@ describe("aes-cmac", () => {
 
       it("creates the correct subkeys for a 256 bit key", async () => {
         const expected = {
-          key1: Buffer.from("cad1ed03299eedac2e9a99808621502f", "hex"),
-          key2: Buffer.from("95a3da06533ddb585d3533010c42a0d9", "hex"),
+          key1: Uint8Array.from(Buffer.from("cad1ed03299eedac2e9a99808621502f", "hex")),
+          key2: Uint8Array.from(Buffer.from("95a3da06533ddb585d3533010c42a0d9", "hex")),
         };
         const aesCmac = new AesCmac(keys["256"]);
         const result = await aesCmac.getSubKeys();
@@ -67,7 +67,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["128"]);
         const result = await aesCmac.calculate(messages.length0);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "bb1d6929e95937287fa37d129b756746"
         );
       });
@@ -76,7 +76,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["192"]);
         const result = await aesCmac.calculate(messages.length0);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "d17ddf46adaacde531cac483de7a9367"
         );
       });
@@ -85,7 +85,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["256"]);
         const result = await aesCmac.calculate(messages.length0);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "028962f61b7bf89efc6b551f4667d983"
         );
       });
@@ -94,7 +94,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["128"]);
         const result = await aesCmac.calculate(messages.length128);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "070a16b46b4d4144f79bdd9dd04a287c"
         );
       });
@@ -103,7 +103,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["192"]);
         const result = await aesCmac.calculate(messages.length128);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "9e99a7bf31e710900662f65e617c5184"
         );
       });
@@ -112,7 +112,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["256"]);
         const result = await aesCmac.calculate(messages.length128);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "28a7023f452e8f82bd4bf28d8c37c35c"
         );
       });
@@ -121,7 +121,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["128"]);
         const result = await aesCmac.calculate(messages.length320);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "dfa66747de9ae63030ca32611497c827"
         );
       });
@@ -130,7 +130,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["192"]);
         const result = await aesCmac.calculate(messages.length320);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "8a1de5be2eb31aad089a82e6ee908b0e"
         );
       });
@@ -139,7 +139,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["256"]);
         const result = await aesCmac.calculate(messages.length320);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "aaf3d8f1de5640c232f5b169b9c911e6"
         );
       });
@@ -148,7 +148,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["128"]);
         const result = await aesCmac.calculate(messages.length512);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "51f0bebf7e3b9d92fc49741779363cfe"
         );
       });
@@ -157,7 +157,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["192"]);
         const result = await aesCmac.calculate(messages.length512);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "a1d5df0eed790f794d77589659f39a11"
         );
       });
@@ -166,7 +166,7 @@ describe("aes-cmac", () => {
         const aesCmac = new AesCmac(keys["256"]);
         const result = await aesCmac.calculate(messages.length512);
         assert.strictEqual(
-          result.toString("hex"),
+          Buffer.from(result).toString("hex"),
           "e1992190549f6ed5696a2c056c315410"
         );
       });
@@ -175,10 +175,10 @@ describe("aes-cmac", () => {
 
   describe("error handling", () => {
     it("throws an error if the provided key is not a valid length", () => {
-      const key = Buffer.from("abcd");
+      const key = Uint8Array.from(Buffer.from("abcd"));
       assert.throws(
         () => new AesCmac(key),
-        (error) => {
+        (error: Error) => {
           assert.strictEqual(
             error.message,
             "Key size must be 128, 192, or 256 bits."

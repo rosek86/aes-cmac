@@ -1,5 +1,4 @@
 import { webcrypto } from "one-webcrypto";
-import { Buffer } from "buffer";
 import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
@@ -9,11 +8,12 @@ export class AesCmac {
     32: `aes-256-cbc`,
   };
   private readonly blockSize = 16;
-  private subkeys?: { key1: Buffer; key2: Buffer };
+  private subkeys?: { key1: Uint8Array; key2: Uint8Array };
   private key: CryptoKey | PromiseLike<CryptoKey>;
-  public constructor(key: Buffer) {
-    if (key instanceof Buffer === false) {
-      throw new Error(`The key must be provided as a Buffer.`);
+
+  public constructor(key: Uint8Array) {
+    if (key instanceof Uint8Array === false) {
+      throw new Error(`The key must be provided as a Uint8Array.`);
     }
 
     if (key.length in this.algos === false) {
@@ -25,10 +25,13 @@ export class AesCmac {
     ]); // note that this is a Promise<CryptoKey> at this point, which we await in aes()
   }
 
-  private async generateSubkeys(): Promise<{ key1: Buffer; key2: Buffer }> {
-    const rb = Buffer.from(`00000000000000000000000000000087`, `hex`);
+  private async generateSubkeys(): Promise<{ key1: Uint8Array; key2: Uint8Array }> {
+    const rb = Uint8Array.from([
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87
+    ]);
 
-    const z = Buffer.alloc(this.blockSize, 0);
+    const z = new Uint8Array(this.blockSize);
     const l = await this.aes(z);
 
     let key1 = BufferTools.bitShiftLeft(l);
@@ -44,30 +47,30 @@ export class AesCmac {
     return { key1, key2 };
   }
 
-  public async getSubKeys(): Promise<{ key1: Buffer; key2: Buffer }> {
+  public async getSubKeys(): Promise<{ key1: Uint8Array; key2: Uint8Array }> {
     // subkeys are generated lazily because we cannot await in a constructor
     if (!this.subkeys) {
       this.subkeys = await this.generateSubkeys();
     }
 
-    const key1 = Buffer.alloc(this.blockSize);
-    const key2 = Buffer.alloc(this.blockSize);
+    const key1 = new Uint8Array(this.blockSize);
+    const key2 = new Uint8Array(this.blockSize);
 
-    this.subkeys.key1.copy(key1);
-    this.subkeys.key2.copy(key2);
+    key1.set(this.subkeys.key1);
+    key2.set(this.subkeys.key2);
 
     return { key1, key2 };
   }
 
-  public async calculate(message: Buffer): Promise<Buffer> {
-    if (message instanceof Buffer === false) {
-      throw new Error(`The message must be provided as a Buffer.`);
+  public async calculate(message: Uint8Array): Promise<Uint8Array> {
+    if (message instanceof Uint8Array === false) {
+      throw new Error(`The message must be provided as a Uint8Array.`);
     }
 
     const blockCount = this.getBlockCount(message);
 
-    let x = Buffer.alloc(this.blockSize, 0);
-    let y = Buffer.alloc(0);
+    let x = new Uint8Array(this.blockSize);
+    let y = new Uint8Array(0);
 
     for (let i = 0; i < blockCount - 1; i++) {
       const from = i * this.blockSize;
@@ -82,13 +85,13 @@ export class AesCmac {
     return x;
   }
 
-  private getBlockCount(message: Buffer): number {
+  private getBlockCount(message: Uint8Array): number {
     const blockCount = Math.ceil(message.length / this.blockSize);
     return blockCount === 0 ? 1 : blockCount;
   }
 
-  private async aes(message: Buffer): Promise<Buffer> {
-    const iv = Buffer.alloc(this.blockSize, 0);
+  private async aes(message: Uint8Array): Promise<Uint8Array> {
+    const iv = new Uint8Array(this.blockSize);
 
     /// because constructors cannot be async, we await the key import here
     if ("then" in this.key) {
@@ -101,10 +104,10 @@ export class AesCmac {
       message
     )) as ArrayBuffer;
 
-    return Buffer.from(aesCiphertext).slice(0, 16);
+    return new Uint8Array(aesCiphertext.slice(0, 16));
   }
 
-  private async getLastBlock(message: Buffer): Promise<Buffer> {
+  private async getLastBlock(message: Uint8Array): Promise<Uint8Array> {
     if (!this.subkeys) {
       this.subkeys = await this.generateSubkeys();
     }
@@ -121,11 +124,15 @@ export class AesCmac {
     return BufferTools.xor(paddedBlock, key);
   }
 
-  private padding(message: Buffer, blockIndex: number): Buffer {
-    const block = Buffer.alloc(this.blockSize, 0);
+  private padding(message: Uint8Array, blockIndex: number): Uint8Array {
+    const block = new Uint8Array(this.blockSize);
 
     const from = blockIndex * this.blockSize;
-    const bytes = message.copy(block, 0, from);
+
+    const slice = message.slice(from, from + this.blockSize);
+    block.set(slice);
+    const bytes = slice.length;
+    // const bytes = message.copy(block, 0, from);
 
     if (bytes !== this.blockSize) {
       block[bytes] = 0x80;

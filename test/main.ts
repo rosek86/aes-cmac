@@ -1,8 +1,5 @@
-require("./BufferTools");
-require("./AesCmac");
-
-const AesCmac = require("../lib/AesCmac.js").AesCmac;
-const assert = require("assert");
+import assert from "assert";
+import { AesCmac } from "../lib/AesCmac";
 
 describe("index (module entry point)", () => {
   describe("aesCmac(message)", () => {
@@ -11,7 +8,7 @@ describe("index (module entry point)", () => {
       const message = Buffer.from("6bc1bee22e409f96e93d7e117393172a", "hex");
       const result = await new AesCmac(key).calculate(message);
       assert.strictEqual(
-        result.toString("hex"),
+        Buffer.from(result).toString("hex"),
         "070a16b46b4d4144f79bdd9dd04a287c"
       );
     });
@@ -21,7 +18,7 @@ describe("index (module entry point)", () => {
       const message = Buffer.from("this|is|a|test|message");
       const result = await new AesCmac(key).calculate(message);
       assert.strictEqual(
-        result.toString("hex"),
+        Buffer.from(result).toString("hex"),
         "0125c538f8be7c4eea370f992a4ffdcb"
       );
     });
@@ -36,17 +33,17 @@ describe("index (module entry point)", () => {
     });
 
     it("throws an error if the key is not a Buffer", async () => {
-      const expected = "The key must be provided as a Buffer.";
+      const expected = "The key must be provided as a Uint8Array.";
       assert.throws(
-        () => new AesCmac(10),
-        (error) => {
+        () => new (AesCmac as any)(10),
+        (error: Error) => {
           assert.equal(error.message, expected);
           return true;
         }
       );
       assert.throws(
-        () => new AesCmac(null),
-        (error) => {
+        () => new (AesCmac as any)(null),
+        (error: Error) => {
           assert.equal(error.message, expected);
           return true;
         }
@@ -54,16 +51,15 @@ describe("index (module entry point)", () => {
     });
 
     it("throws an error if the message is not a Buffer", async () => {
-      const expected = "The message must be provided as a Buffer.";
+      const expected = "The message must be provided as a Uint8Array.";
       await assertAesCmacError(Buffer.from("averysecretvalue"), null, expected);
       await assertAesCmacError(Buffer.from("averysecretvalue"), {}, expected);
     });
 
-    async function assertAesCmacError(key, message, expectedErrorMessage) {
+    async function assertAesCmacError(key: Uint8Array, message: unknown, expectedErrorMessage: string) {
       await assert.rejects(
-        new AesCmac(key).calculate(message),
-
-        (error) => {
+        (new AesCmac(key).calculate as any)(message),
+        (error: Error) => {
           assert("message" in error);
           assert.strictEqual(error.message, expectedErrorMessage);
           return true;
