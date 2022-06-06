@@ -3,9 +3,9 @@ import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
   private readonly algos: { [id: number]: string } = {
-    16: `aes-128-cbc`,
-    24: `aes-192-cbc`,
-    32: `aes-256-cbc`,
+    16: "aes-128-cbc",
+    24: "aes-192-cbc",
+    32: "aes-256-cbc",
   };
   private readonly blockSize = 16;
   private subkeys?: { key1: Uint8Array; key2: Uint8Array };
@@ -13,11 +13,11 @@ export class AesCmac {
 
   public constructor(key: Uint8Array) {
     if (key instanceof Uint8Array === false) {
-      throw new Error(`The key must be provided as a Uint8Array.`);
+      throw new Error("The key must be provided as a Uint8Array.");
     }
 
     if (key.length in this.algos === false) {
-      throw new Error(`Key size must be 128, 192, or 256 bits.`);
+      throw new Error("Key size must be 128, 192, or 256 bits.");
     }
 
     this.key = webcrypto.subtle.importKey("raw", key, "AES-CBC", false, [
@@ -54,9 +54,9 @@ export class AesCmac {
     }
 
     const key1 = new Uint8Array(this.blockSize);
-    const key2 = new Uint8Array(this.blockSize);
-
     key1.set(this.subkeys.key1);
+
+    const key2 = new Uint8Array(this.blockSize);
     key2.set(this.subkeys.key2);
 
     return { key1, key2 };
@@ -64,7 +64,7 @@ export class AesCmac {
 
   public async calculate(message: Uint8Array): Promise<Uint8Array> {
     if (message instanceof Uint8Array === false) {
-      throw new Error(`The message must be provided as a Uint8Array.`);
+      throw new Error("The message must be provided as a Uint8Array.");
     }
 
     const blockCount = this.getBlockCount(message);
@@ -131,11 +131,9 @@ export class AesCmac {
 
     const slice = message.slice(from, from + this.blockSize);
     block.set(slice);
-    const bytes = slice.length;
-    // const bytes = message.copy(block, 0, from);
 
-    if (bytes !== this.blockSize) {
-      block[bytes] = 0x80;
+    if (slice.length !== this.blockSize) {
+      block[slice.length] = 0x80;
     }
 
     return block;

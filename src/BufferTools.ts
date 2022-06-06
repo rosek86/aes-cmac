@@ -19,10 +19,10 @@ export class BufferTools {
   }
 
   public static toBinaryString(buffer: Uint8Array): string {
-    let binary = ``;
+    let binary = "";
     for (let i = 0; i < buffer.length; i++) {
       for (let b = 7; b >= 0; b--) {
-        binary += buffer[i] & (1 << b) ? `1` : `0`;
+        binary += buffer[i] & (1 << b) ? "1" : "0";
       }
     }
     return binary;

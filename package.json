@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "example": "ts-node examples/example.ts"
   },
   "repository": {
     "type": "git",
