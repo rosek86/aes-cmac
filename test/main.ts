@@ -1,5 +1,5 @@
 import assert from "assert";
-import { AesCmac } from "../lib/AesCmac";
+import { AesCmac } from "../src/AesCmac";
 
 describe("index (module entry point)", () => {
   describe("aesCmac(message)", () => {

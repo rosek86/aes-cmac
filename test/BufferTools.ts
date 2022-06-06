@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { BufferTools } from '../lib/BufferTools';
+import { BufferTools } from '../src/BufferTools';
 
 describe('buffer-tools', () => {
   describe('bitShiftLeft', () => {

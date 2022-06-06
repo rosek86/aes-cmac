@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "lib/require",
+    "outDir": "lib",
     "target": "ES2021",
     "module": "CommonJS",
     "moduleResolution": "node",

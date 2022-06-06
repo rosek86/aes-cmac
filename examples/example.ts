@@ -1,4 +1,4 @@
-import { AesCmac } from '../lib/AesCmac';
+import { AesCmac } from '../src/AesCmac';
 
 (async () => {
   const key = Buffer.from('2b7e151628aed2a6abf7158809cf4f3c', 'hex');
