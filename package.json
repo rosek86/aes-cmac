@@ -2,10 +2,9 @@
   "name": "aes-cmac",
   "version": "1.0.3",
   "description": "AES-CMAC implementation in typescript",
-  "main": "lib/AesCmac.js",
-  "types": "lib/AesCmac.d.ts",
+  "types": "lib/import/AesCmac.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p tsconfig.esm.json",
     "watch": "tsc -w",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
     "prepare": "npm run build",
@@ -27,6 +26,10 @@
   "files": [
     "lib/**/*"
   ],
+  "exports": {
+    "import": "./lib/import/AesCmac.js",
+    "require": "./lib/require/AesCmac.js"
+  },
   "devDependencies": {
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.38",

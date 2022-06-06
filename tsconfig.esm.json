@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "lib/require",
+    "outDir": "./lib/import",
     "target": "ES2021",
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": ["ES2021", "dom"]
   },
-  "files": [
+  "include": [
     "./src/AesCmac.ts"
   ]
 }

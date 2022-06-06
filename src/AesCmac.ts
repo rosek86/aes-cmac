@@ -2,12 +2,9 @@ import { webcrypto } from "one-webcrypto";
 import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
-  private readonly algos: { [id: number]: string } = {
-    16: "aes-128-cbc",
-    24: "aes-192-cbc",
-    32: "aes-256-cbc",
-  };
   private readonly blockSize = 16;
+  private readonly supportedLengths = [ 16, 24, 32 ];
+
   private subkeys?: { key1: Uint8Array; key2: Uint8Array };
   private key: CryptoKey | PromiseLike<CryptoKey>;
 
@@ -16,7 +13,7 @@ export class AesCmac {
       throw new Error("The key must be provided as a Uint8Array.");
     }
 
-    if (key.length in this.algos === false) {
+    if (this.supportedLengths.includes(key.length) === false) {
       throw new Error("Key size must be 128, 192, or 256 bits.");
     }
 
