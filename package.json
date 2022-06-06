@@ -1,12 +1,11 @@
 {
   "name": "aes-cmac",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "AES-CMAC implementation in typescript",
   "types": "lib/aes-cmac.d.ts",
   "scripts": {
     "build": "rollup --config rollup.config.js",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
-    "prepare": "npm run build",
     "example": "ts-node examples/example.ts"
   },
   "repository": {
