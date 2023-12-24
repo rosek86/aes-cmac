@@ -1,11 +1,11 @@
-import dts from 'rollup-plugin-dts'
-import esbuild from 'rollup-plugin-esbuild'
+import dts from "rollup-plugin-dts";
+import esbuild from "rollup-plugin-esbuild";
 
-const bundle = config => ({
+const bundle = (config) => ({
   ...config,
-  input: 'src/AesCmac.ts',
-  external: id => !/^[./]/.test(id),
-})
+  input: "src/AesCmac.ts",
+  external: (id) => !/^[./]/.test(id),
+});
 
 export default [
   bundle({
@@ -13,12 +13,12 @@ export default [
     output: [
       {
         file: `lib/aes-cmac.cjs`,
-        format: 'cjs',
+        format: "cjs",
         sourcemap: true,
       },
       {
         file: `lib/aes-cmac.mjs`,
-        format: 'es',
+        format: "es",
         sourcemap: true,
       },
     ],
@@ -27,7 +27,7 @@ export default [
     plugins: [dts()],
     output: {
       file: `lib/aes-cmac.d.ts`,
-      format: 'es',
+      format: "es",
     },
   }),
-]
+];

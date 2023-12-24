@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
     "outDir": "lib",
-    "target": "ES2021",
+    "target": "ES2022",
     "module": "CommonJS",
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,
     "esModuleInterop": true
   },
-  "files": [
-    "./src/AesCmac.ts"
-  ]
+  "files": ["./src/AesCmac.ts"]
 }

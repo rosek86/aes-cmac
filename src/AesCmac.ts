@@ -3,7 +3,7 @@ import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
   private readonly blockSize = 16;
-  private readonly supportedLengths = [ 16, 24, 32 ];
+  private readonly supportedLengths = [16, 24, 32];
 
   private subkeys?: { key1: Uint8Array; key2: Uint8Array };
   private key: CryptoKey | PromiseLike<CryptoKey>;
@@ -17,15 +17,15 @@ export class AesCmac {
       throw new Error("Key size must be 128, 192, or 256 bits.");
     }
 
-    this.key = webcrypto.subtle.importKey("raw", key, "AES-CBC", false, [
-      "encrypt",
-    ]); // note that this is a Promise<CryptoKey> at this point, which we await in aes()
+    this.key = webcrypto.subtle.importKey("raw", key, "AES-CBC", false, ["encrypt"]); // note that this is a Promise<CryptoKey> at this point, which we await in aes()
   }
 
-  private async generateSubkeys(): Promise<{ key1: Uint8Array; key2: Uint8Array }> {
+  private async generateSubkeys(): Promise<{
+    key1: Uint8Array;
+    key2: Uint8Array;
+  }> {
     const rb = Uint8Array.from([
-      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87,
     ]);
 
     const z = new Uint8Array(this.blockSize);
@@ -95,11 +95,7 @@ export class AesCmac {
       this.key = await this.key;
     }
 
-    const aesCiphertext = (await webcrypto.subtle.encrypt(
-      { name: "AES-CBC", iv },
-      this.key,
-      message
-    )) as ArrayBuffer;
+    const aesCiphertext = (await webcrypto.subtle.encrypt({ name: "AES-CBC", iv }, this.key, message)) as ArrayBuffer;
 
     return new Uint8Array(aesCiphertext.slice(0, 16));
   }
