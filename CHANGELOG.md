@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2023-12-26
+
+- Add test to improve npm page code quality...
+
 ## [3.0.0] - 2023-12-24
 
 - Drop support for node16

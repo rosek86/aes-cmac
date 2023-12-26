@@ -5,7 +5,7 @@
   "types": "lib/aes-cmac.d.ts",
   "scripts": {
     "build": "rollup --config rollup.config.mjs",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.test.ts'",
     "example": "ts-node examples/example.ts"
   },
   "repository": {
