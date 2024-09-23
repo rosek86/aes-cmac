@@ -25,9 +25,15 @@ export default [
   }),
   bundle({
     plugins: [dts()],
-    output: {
-      file: `lib/aes-cmac.d.ts`,
-      format: "es",
-    },
+    output: [
+      {
+        file: `lib/aes-cmac.d.mts`,
+        format: "es",
+      },
+      {
+        file: `lib/aes-cmac.d.cts`,
+        format: "cjs",
+      },
+    ],
   }),
 ];
