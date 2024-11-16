@@ -4,8 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [3.1.0] - 2024-11-16
 
-- Updated outdated dependencies
-- (#6) Fixed types export for ESNext target
+- (#7) Updated outdated dependencies, added examples to test esm/cjs imports.
+- (#6) Fixed types export for ESNext target.
 
 ## [3.0.2] - 2024-05-17
 
