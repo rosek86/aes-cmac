@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0] - 2024-11-16
+
+- Updated outdated dependencies
+- (#6) Fixed types export for ESNext target
+
 ## [3.0.2] - 2024-05-17
 
 - Add main field to package.json

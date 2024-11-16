@@ -1,6 +1,6 @@
 {
   "name": "aes-cmac",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "main": "lib/aes-cmac.cjs",
   "module": "lib/aes-cmac.mjs",
   "description": "AES-CMAC implementation in typescript",
