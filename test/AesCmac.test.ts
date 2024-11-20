@@ -1,4 +1,5 @@
-import assert from "assert";
+import assert from "node:assert";
+import { describe, it } from "node:test";
 import { AesCmac } from "../src/AesCmac";
 
 describe("aes-cmac", () => {
