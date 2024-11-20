@@ -1,4 +1,5 @@
-import assert from "assert";
+import assert from "node:assert";
+import { describe, it } from "node:test";
 import { AesCmac } from "../src/AesCmac";
 
 describe("index (module entry point)", () => {
@@ -17,9 +18,9 @@ describe("index (module entry point)", () => {
       assert.strictEqual(Buffer.from(result).toString("hex"), "0125c538f8be7c4eea370f992a4ffdcb");
     });
 
-    it("throws an error if the key length is invalid", () => {
+    it("throws an error if the key length is invalid", async () => {
       const expected = "Key size must be 128, 192, or 256 bits.";
-      assertAesCmacError(Buffer.from("key"), Buffer.from("some message"), expected);
+      await assertAesCmacError(Buffer.from("key"), Buffer.from("some message"), expected);
     });
 
     it("throws an error if the key is not a Buffer", async () => {
@@ -47,11 +48,14 @@ describe("index (module entry point)", () => {
     });
 
     async function assertAesCmacError(key: Uint8Array, message: unknown, expectedErrorMessage: string) {
-      await assert.rejects((new AesCmac(key).calculate as any)(message), (error: Error) => {
+      try {
+        const aesCmac = new AesCmac(key);
+        await (aesCmac.calculate as any)(message);
+        assert.fail("Expected an error to be thrown.");
+      } catch (error) {
         assert("message" in error);
         assert.strictEqual(error.message, expectedErrorMessage);
-        return true;
-      });
+      }
     }
   });
 });

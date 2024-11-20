@@ -6,8 +6,11 @@
   "description": "AES-CMAC implementation in typescript",
   "scripts": {
     "build": "rollup --config rollup.config.mjs",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.test.ts'",
-    "example": "ts-node examples/example.ts"
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "example": "tsx examples/example.ts"
+  },
+  "engines": {
+    "node": ">=16.17.0"
   },
   "repository": {
     "type": "git",
@@ -37,14 +40,12 @@
     }
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^18.19.3",
+    "@types/node": "^16.18.119",
     "esbuild": "^0.24.0",
-    "mocha": "^10.2.0",
-    "rollup": "^4.9.1",
+    "rollup": "^4.27.3",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.0",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
