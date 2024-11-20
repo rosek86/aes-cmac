@@ -23,7 +23,9 @@ describe("buffer-tools", () => {
 
   describe("xor", () => {
     function testXor(a: string, b: string): string {
-      return Buffer.from(BufferTools.xor(Buffer.from(a, "hex"), Buffer.from(b, "hex"))).toString("hex");
+      return Buffer.from(BufferTools.xor(Buffer.from(a, "hex"), Buffer.from(b, "hex"))).toString(
+        "hex",
+      );
     }
 
     it("returns the logical XOR of two buffers", () => {

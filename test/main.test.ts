@@ -47,7 +47,11 @@ describe("index (module entry point)", () => {
       await assertAesCmacError(Buffer.from("averysecretvalue"), {}, expected);
     });
 
-    async function assertAesCmacError(key: Uint8Array, message: unknown, expectedErrorMessage: string) {
+    async function assertAesCmacError(
+      key: Uint8Array,
+      message: unknown,
+      expectedErrorMessage: string,
+    ) {
       try {
         const aesCmac = new AesCmac(key);
         await (aesCmac.calculate as any)(message);

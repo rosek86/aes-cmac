@@ -7,7 +7,9 @@
   "scripts": {
     "build": "rollup --config rollup.config.mjs",
     "test": "node --import tsx --test test/**/*.test.ts",
-    "example": "tsx examples/example.ts"
+    "example": "tsx examples/example.ts",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "engines": {
     "node": ">=16.17.0"
@@ -42,6 +44,7 @@
   "devDependencies": {
     "@types/node": "^16.18.119",
     "esbuild": "^0.24.0",
+    "prettier": "^3.3.3",
     "rollup": "^4.27.3",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.0",
