@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0]
+
+## Breaking changes
+
+- (#10) Remove one-webcrypto dependency, now using native Web Crypto API
+        drop support for Node.js 18 and below
+
+
 ## [3.1.0] - 2024-11-16
 
 - (#7) Updated outdated dependencies, added examples to test esm/cjs imports.
