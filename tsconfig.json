@@ -1,12 +1,30 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+    "target": "ES2024",
+    "lib": ["ES2024"],
     "outDir": "lib",
-    "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "node",
+
     "strict": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "noErrorTruncation": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+
+    "noEmit": false,
     "declaration": true,
-    "esModuleInterop": true
+    "incremental": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true
   },
   "files": ["./src/AesCmac.ts"]
 }

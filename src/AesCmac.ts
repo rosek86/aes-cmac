@@ -1,3 +1,4 @@
+import type { webcrypto } from "node:crypto";
 import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
@@ -5,7 +6,7 @@ export class AesCmac {
   private readonly supportedLengths = [16, 24, 32];
 
   private subkeys?: { key1: Uint8Array; key2: Uint8Array };
-  private key: CryptoKey | PromiseLike<CryptoKey>;
+  private key: webcrypto.CryptoKey | PromiseLike<webcrypto.CryptoKey>;
 
   public constructor(key: Uint8Array) {
     if (key instanceof Uint8Array === false) {
@@ -33,12 +34,12 @@ export class AesCmac {
     const l = await this.aes(z);
 
     let key1 = BufferTools.bitShiftLeft(l);
-    if (l[0] & 0x80) {
+    if (l[0]! & 0x80) {
       key1 = BufferTools.xor(key1, rb);
     }
 
     let key2 = BufferTools.bitShiftLeft(key1);
-    if (key1[0] & 0x80) {
+    if (key1[0]! & 0x80) {
       key2 = BufferTools.xor(key2, rb);
     }
 
@@ -88,7 +89,7 @@ export class AesCmac {
     return blockCount === 0 ? 1 : blockCount;
   }
 
-  private async aes(message: Uint8Array): Promise<Uint8Array> {
+  private async aes(message: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
     const iv = new Uint8Array(this.blockSize);
 
     /// because constructors cannot be async, we await the key import here
