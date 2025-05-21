@@ -1,4 +1,3 @@
-import { webcrypto } from "one-webcrypto";
 import { BufferTools } from "./BufferTools";
 
 export class AesCmac {
@@ -18,7 +17,7 @@ export class AesCmac {
     }
 
     // note that this is a Promise<CryptoKey> at this point, which we await in aes()
-    this.key = webcrypto.subtle.importKey("raw", key, "AES-CBC", false, ["encrypt"]);
+    this.key = crypto.subtle.importKey("raw", key, "AES-CBC", false, ["encrypt"]);
   }
 
   private async generateSubkeys(): Promise<{
@@ -97,7 +96,7 @@ export class AesCmac {
       this.key = await this.key;
     }
 
-    const aesCiphertext = (await webcrypto.subtle.encrypt(
+    const aesCiphertext = (await crypto.subtle.encrypt(
       { name: "AES-CBC", iv },
       this.key,
       message,
