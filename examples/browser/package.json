@@ -1,0 +1,6 @@
+{
+  "name": "import-test",
+  "dependencies": {
+    "aes-cmac": "^4.0.1-beta.1"
+  }
+}

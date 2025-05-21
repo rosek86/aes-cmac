@@ -3,15 +3,16 @@
   "scripts": {
     "build": "tsc"
   },
+  "type": "commonjs",
   "devDependencies": {
-    "@types/node": "^22.9.0",
-    "typescript": "^5.6.3"
+    "@types/node": "^22.15.21",
+    "typescript": "^5.8.3"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "dependencies": {
-    "aes-cmac": "3.1.0"
+    "aes-cmac": "^4.0.0"
   }
 }
