@@ -1,10 +1,11 @@
 {
   "name": "aes-cmac",
-  "version": "4.0.0",
+  "version": "4.0.0-beta.1",
   "main": "lib/aes-cmac.cjs",
   "module": "lib/aes-cmac.mjs",
   "description": "AES-CMAC implementation in typescript",
   "scripts": {
+    "lint": "tsc",
     "build": "rollup --config rollup.config.mjs",
     "test": "node --import tsx --test test/**/*.test.ts",
     "example": "tsx examples/example.ts",
