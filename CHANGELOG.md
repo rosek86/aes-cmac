@@ -2,12 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.0.0] - RC
+## [4.0.0] - 2025-05-21
 
-### Breaking changes
+### Breaking Changes
 
-- (#10) Remove one-webcrypto dependency, now using native Web Crypto API
-  drop support for Node.js 18 and below
+- (#10) Dropped `one-webcrypto` dependency; now using the native Web Crypto API.
+  ⚠️ This change removes support for Node.js 18 and below.
+
+### Features
+
+- (#11) Updated dependencies.
+- (#11) Switched to a modern TypeScript configuration.
 
 ## [3.1.0] - 2024-11-16
 
